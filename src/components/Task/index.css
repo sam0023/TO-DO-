@@ -1,0 +1,36 @@
+.main-bg{
+    padding: 30px;
+    font-family: 'Roboto';
+    max-height: 100vh;
+}
+
+.form{
+    width:60%;
+    max-width:780px ;
+    border:solid 3px #5393a3 ;
+    padding: 10px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+.tag{
+    background-color: aliceblue;
+    padding: 8px;
+    border-radius: 10px;
+}
+.add_new_btn{
+    margin-bottom: 10px;
+}
+
+.table{
+    border:solid 3px #5393a3 ;
+    height:100%;
+    padding:2px;
+} 
+
+.cancel_btn{
+    margin-left: 30px;
+} 
+.delete_icon{
+    margin-left: 15px;
+     
+}
