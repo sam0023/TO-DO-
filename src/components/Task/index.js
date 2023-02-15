@@ -400,7 +400,7 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
 
                    <Form.Item label="SELECT DUE DATE" name="date"> 
                         
-                        <DatePicker defaultValue={dueDate} disabled={showUpdateForm}  onChange={onChangeDueDate}/>
+                        <DatePicker defaultValue={dueDate} disabled={showUpdateForm} required  onChange={onChangeDueDate}/>
                    </Form.Item> 
                    
                    <Form.Item label="TAGS">
