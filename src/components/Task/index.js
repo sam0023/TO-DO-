@@ -38,7 +38,7 @@ const Task=()=>{
 
 const [edit, setEdit]= useState({})  
 const Edit = (record) => { 
-    //  setVisible(true)  
+     
     const dummy = record.title==="Dummy1" || record.title=== "Dummy2"  
          if(dummy){
             Modal.confirm({
@@ -50,13 +50,9 @@ const Edit = (record) => {
                 {
                     title:'Are you sure you want to Edit this!', 
                     onOk:()=>{ 
-                        console.log('record:')
-                        console.log(record)
-                        // const row = data.filter((eachItem)=>(eachItem.id === record.id)) 
-                        // console.log("")
-                        // console.log(row)
+                         
                         setEdit(record) 
-                        // renderEditSection(row) 
+                         
                         setTitle(record.title) 
                         setDescription(record.description) 
                         setDueDate(record.dueDate) 
@@ -67,7 +63,7 @@ const Edit = (record) => {
                     }
                 }
             )
-        }
+       }
 
     
 };  
@@ -101,9 +97,7 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
 
     const column=[
         {
-            // key:"S.No",
-            // title:"S.No",
-            // dataIndex:"id",
+            
             title: 'Row Number',
             dataIndex: 'index',
             key: 'index',
@@ -152,8 +146,7 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
             title:"Due Date" ,
             dataIndex:"dueDate",
             render: (text,record,index)=>{ 
-                // console.log("now we are in date colum") 
-                // console.log(index) 
+                  
                  const dummy = record.title==="Dummy1" || record.title=== "Dummy2" 
                 if(dummy){ 
                     return text 
@@ -202,10 +195,7 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
 
                     console.log("this is value") 
                     console.log(value)
-                    // if (value.length === 0) {
-                    //     return true;
-                    //   }
-                 // return value.every((eachItem)=>(record.tags.includes(eachItem)))   
+                    
                   return record.tags.includes(value)
                 }
             
@@ -233,7 +223,7 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
                 },
             ],
             onFilter:(value, record)=>  
-                // console.log("filter")
+                
                 record.status.indexOf(value)===0,
                 
          }, 
@@ -273,23 +263,18 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
     }
 
     const onChangeDueDate=(event)=>{ 
-        console.log("this is how date looks") 
-        console.log(event)
-        const date=  event.format('DD-MM-YY') 
-        console.log("this is how formatted date looks")
-        console.log(date)
+        
         setDueDate(event)
     }
     
     const onChangeTags =(event)=>{
-        // const tags= event.tagret.value 
-        console.log(event)
+      
+         
         setTags(event)
     }
     
     const onChangeStatus=(event)=>{
-        // const status = event.target.value
-        console.log(event) 
+        
         setStatus(event) 
     }
     
@@ -303,7 +288,7 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
     }
 
     const onSubmitForm =()=>{ 
-        // console.log("form submitted")
+       
         setLoading(true) 
         setTimeout(()=>{setLoading(false)}, 500)
         const currentDate = new Date();
@@ -311,7 +296,7 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
         const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
         const year = currentDate.getFullYear().toString().slice(-2);
         const timestamp =  `${day}-${month}-${year}`
-        // console.log(title)
+         
         const toDo={
             id:uuid(),
             currentTime:timestamp, 
@@ -321,12 +306,9 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
                 tags:tags,
                 status:status 
         }
-        console.log(toDo) 
         
-        // data.push(toDo) 
-
          const newData= [...data, toDo]
-         console.log(newData)
+          
         setData( newData)
         defaultState()
     } 
@@ -396,10 +378,7 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
     }
 
     const renderToDoForm=()=>{
-        // console.log("this is showform")
-        // console.log(showForm) 
-        // console.log("in form")
-        // console.log(title)
+         
         if(showForm){
             return( 
             <div>
@@ -419,8 +398,9 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
                        <Input.TextArea onChange={onChangeDescription} rows={4} defaultValue={description} placeholder="DESCRIPTION"  required ></Input.TextArea>
                    </Form.Item> 
 
-                   <Form.Item label="SELECT DUE DATE" name="date">
-                        <DatePicker defaultValue={dueDate}  onChange={onChangeDueDate}/>
+                   <Form.Item label="SELECT DUE DATE" name="date"> 
+                        
+                        <DatePicker defaultValue={dueDate} disabled={showUpdateForm}  onChange={onChangeDueDate}/>
                    </Form.Item> 
                    
                    <Form.Item label="TAGS">
@@ -466,8 +446,7 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
     
      
     const renderTable=(data)=>{
-        //  console.log('this is rendered')
-        // console.log(data)
+         
         return(
         <Table className="table" loading={false}  dataSource={data} columns={column} pagination={{pagination:8, total:50, showSizeChanger:true}} />
         )
@@ -476,12 +455,11 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
     return( 
         <div className="main-bg"> 
              
-            {/* {renderEditModal()} */}
+            
              {renderToDoForm()} 
              <p>Note: <span className='warning_msg'>Below two rows are DUMMY Rows they are show for samples it cann't be edited. To test all functionalites please add rows using ADD button.Thank You!</span></p>
              {renderTable(data)}
-           {/* <Table loading={false}  dataSource={data} columns={column} pagination={{pagination:8, total:50, showSizeChanger:true}} /> */}
-             
+           
         </div>
     )  
     
