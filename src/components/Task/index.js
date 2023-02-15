@@ -3,8 +3,11 @@
 import React,{useState} from 'react' 
 import {Modal, Table,Form,Input,Button,Select,DatePicker } from 'antd'
 import {v4 as uuid} from 'uuid'
-import { EditOutlined, DeleteOutlined} from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, SearchOutlined} from '@ant-design/icons'; 
+import ColumnSearch from '../ColumnSearch';
+ 
 import './index.css'    
+
 
 
 const Task=()=>{
@@ -12,18 +15,18 @@ const Task=()=>{
         {    
             id:uuid(),
             currentTime:"10-2-23",
-            title:"trail1",
-            description:"this is trail1",
+            title:"Dummy1",
+            description:"This is Dummy data 1",
             dueDate: '10-02-23' ,
-            tags:["IMPORTANT","LESS IMPORTANCE"] ,
+            tags:["IMPORTANT","LESS IMPORTANT"] ,
             status:"WORKING"
         }, 
         {   
              id:uuid(),
             currentTime:"11-02-23",
-            title:"trail2",
-            description:"this is trail2",
-            dueDate:"13-2-23",
+            title:"Dummy2",
+            description:"This is Dummy data 2",
+            dueDate:"13-02-23",
             tags:["MOST IMPORTANT","fail"] ,
             status:"DONE"
         }
@@ -35,29 +38,38 @@ const Task=()=>{
 
 const [edit, setEdit]= useState({})  
 const Edit = (record) => { 
-    //  setVisible(true) 
-
-    Modal.confirm(
-        {
-            title:'Are you sure you want to Edit this!', 
-            onOk:()=>{ 
-                console.log('record:')
-                console.log(record)
-                // const row = data.filter((eachItem)=>(eachItem.id === record.id)) 
-                // console.log("")
-                // console.log(row)
-                setEdit(record) 
-                // renderEditSection(row) 
-                setTitle(record.title) 
-                setDescription(record.description) 
-                setDueDate(record.dueDate) 
-                setTags(record.tags) 
-                setStatus(record.status) 
-                setShowUpdateForm(true) 
-                setShowForm(true) 
-            }
+    //  setVisible(true)  
+    const dummy = record.title==="Dummy1" || record.title=== "Dummy2"  
+         if(dummy){
+            Modal.confirm({
+                title:"SORRY, YOU CANNOT EDIT THIS!",
+                
+            })
+        }else{
+            Modal.confirm(
+                {
+                    title:'Are you sure you want to Edit this!', 
+                    onOk:()=>{ 
+                        console.log('record:')
+                        console.log(record)
+                        // const row = data.filter((eachItem)=>(eachItem.id === record.id)) 
+                        // console.log("")
+                        // console.log(row)
+                        setEdit(record) 
+                        // renderEditSection(row) 
+                        setTitle(record.title) 
+                        setDescription(record.description) 
+                        setDueDate(record.dueDate) 
+                        setTags(record.tags) 
+                        setStatus(record.status) 
+                        setShowUpdateForm(true) 
+                        setShowForm(true) 
+                    }
+                }
+            )
         }
-    )
+
+    
 };  
 
  
@@ -71,15 +83,18 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
 
 
 
-    const Delete=(record)=>{
+    const Delete=(record)=>{ 
+          
+            Modal.confirm({
+                title:"Are you sure you want to delete this ?",
+                onOk:()=>{
+                    const updatedData= data.filter((eachItem)=>(eachItem.id !== record.id)) 
+                    setData(updatedData)
+                }
+            })
          
-        Modal.confirm({
-            title:"Are you sure you want to delete this ?",
-            onOk:()=>{
-                const updatedData= data.filter((eachItem)=>(eachItem.id !== record.id)) 
-                setData(updatedData)
-            }
-        })
+         
+        
     }
 
      
@@ -106,14 +121,31 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
             title:"Title",
             dataIndex:"title",
             sorter:(a,b)=>a.title>b.title, 
-            sortDirections: [ "ascend" ,"descend"]
+            sortDirections: [ "ascend" ,"descend"],
+            filterDropdown:({setSelectedKeys, selectedKeys, confirm, clearFilters})=>{ 
+                return <ColumnSearch key="title" setSelectedKeys={setSelectedKeys} selectedKeys={selectedKeys} confirm={confirm} clearFilters={clearFilters} />
+            } ,
+            filterIcon:()=>(<SearchOutlined/>),
+            onFilter:(value,record)=>{
+                return record.title.toLowerCase().includes(value.toLowerCase())
+            }
+            
+
+
         },
         {
             key:"description",
             title:"Description",
             dataIndex:"description",
             sorter:(a,b)=>a.description >b.description, 
-            sortDirections: [ "ascend" ,"descend"]
+            sortDirections: [ "ascend" ,"descend"],
+            filterDropdown:({setSelectedKeys, selectedKeys, confirm, clearFilters})=>{ 
+                return <ColumnSearch key="description" setSelectedKeys={setSelectedKeys} selectedKeys={selectedKeys} confirm={confirm} clearFilters={clearFilters} />
+            } ,
+            filterIcon:()=>(<SearchOutlined/>),
+            onFilter:(value,record)=>{
+                return record.description.toLowerCase().includes(value.toLowerCase())
+            }
         },
         {
             key:"dueDate",
@@ -121,18 +153,26 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
             dataIndex:"dueDate",
             render: (text,record,index)=>{ 
                 // console.log("now we are in date colum") 
-                // console.log(index)
-                if(index>1){ 
-                    console.log("in date column")
-                    const updatedDate=  record.dueDate.format('DD-MM-YY') 
+                // console.log(index) 
+                 const dummy = record.title==="Dummy1" || record.title=== "Dummy2" 
+                if(dummy){ 
+                    return text 
+                }
+                const updatedDate=  record.dueDate.format('DD-MM-YY') 
                     console.log(updatedDate)
                     return updatedDate
-                }
-                return text 
+                
                 
             },
             sorter:(a,b)=>a.dueDate >b.dueDate, 
-            sortDirections: [ "ascend" ,"descend"]
+            sortDirections: [ "ascend" ,"descend"],
+            filterDropdown:({setSelectedKeys, selectedKeys, confirm, clearFilters})=>{ 
+                return <ColumnSearch key="dueDate" setSelectedKeys={setSelectedKeys} selectedKeys={selectedKeys} confirm={confirm} clearFilters={clearFilters} />
+            } ,
+            filterIcon:()=>(<SearchOutlined/>),
+            onFilter:(value,record)=>{
+                return record.dueDate.toLowerCase().includes(value.toLowerCase())
+            }
         },
         {
             title: 'Tags',
@@ -148,14 +188,26 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
             filters:[
                 { text:"IMPORTANT", value:"IMPORTANT" },
                 { text:"MOST IMPORTANT", value:"MOST IMPORTANT" },
-                { text: "LESS IMPORTANT", value:"LESS IMPORTANT"}
+                { text: "LESS IMPORTANT", value:"LESS IMPORTANT"},
+                {text:"BUG", value:"BUG"},
+                {text:"WORK",value:"WORK"}
                 
             ],
+            filterMultiple: true,
             onFilter:(value, record)=>  
-                {console.log(record.tags) 
-                    console.log("here") 
-                
-                 return record.tags.indexOf(value)===0},
+                {   
+                    
+                    console.log("this is record")
+                    console.log(record.tags) 
+
+                    console.log("this is value") 
+                    console.log(value)
+                    // if (value.length === 0) {
+                    //     return true;
+                    //   }
+                 // return value.every((eachItem)=>(record.tags.includes(eachItem)))   
+                  return record.tags.includes(value)
+                }
             
           },
          {
@@ -425,7 +477,8 @@ const [showUpdateForm, setShowUpdateForm]= useState(false)
         <div className="main-bg"> 
              
             {/* {renderEditModal()} */}
-             {renderToDoForm()}
+             {renderToDoForm()} 
+             <p>Note: <span className='warning_msg'>Below two rows are DUMMY Rows they are show for samples it cann't be edited. To test all functionalites please add rows using ADD button.Thank You!</span></p>
              {renderTable(data)}
            {/* <Table loading={false}  dataSource={data} columns={column} pagination={{pagination:8, total:50, showSizeChanger:true}} /> */}
              

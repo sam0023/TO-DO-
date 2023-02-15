@@ -1,7 +1,8 @@
 .main-bg{
     padding: 30px;
-    font-family: 'Roboto';
-    max-height: 100vh;
+      font-family:sans-serif;
+    min-height: 100vh;
+    background-color: #edf5f7;
 }
 
 .form{
@@ -13,9 +14,10 @@
     border-radius: 10px;
 }
 .tag{
-    background-color: aliceblue;
+    background-color: aliceblue; 
     padding: 8px;
-    border-radius: 10px;
+    border-radius: 10px; 
+    margin: 8px;
 }
 .add_new_btn{
     margin-bottom: 10px;
@@ -33,4 +35,8 @@
 .delete_icon{
     margin-left: 15px;
      
+}
+.warning_msg{
+    color: red;
+    font-family:sans-serif
 }
